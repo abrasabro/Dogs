@@ -1,0 +1,57 @@
+package t.test.dogs;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import java.util.List;
+
+/**
+ * Created by Owner on 2/2/2018.
+ */
+
+public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesViewHolder>{
+
+    //private List<image> mImages;
+    private int mLayout;
+    private Context mContext;
+
+    public ImagesAdapter(int mLayout, Context mContext) {
+        this.mLayout = mLayout;
+        this.mContext = mContext;
+        //mImages
+    }
+
+    public class ImagesViewHolder extends RecyclerView.ViewHolder{
+
+        ImageView mImageView;
+
+        public ImagesViewHolder(View view) {
+            super(view);
+            mImageView = view.findViewById(R.id.imageView_images);
+        }
+    }
+
+    @Override
+    public ImagesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(mLayout, parent, false);
+        return new ImagesAdapter.ImagesViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(ImagesViewHolder holder, int position) {
+        //holder.mImageView.setimage(mImages.get(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        //return mImages.size();
+        return 0;
+    }
+
+
+
+}
