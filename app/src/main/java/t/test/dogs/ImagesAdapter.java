@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -15,14 +17,14 @@ import java.util.List;
 
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesViewHolder>{
 
-    //private List<image> mImages;
+    private List<String> mImages;
     private int mLayout;
     private Context mContext;
 
-    public ImagesAdapter(int mLayout, Context mContext) {
+    public ImagesAdapter(List<String> mImages, int mLayout, Context mContext) {
+        this.mImages = mImages;
         this.mLayout = mLayout;
         this.mContext = mContext;
-        //mImages
     }
 
     public class ImagesViewHolder extends RecyclerView.ViewHolder{
@@ -43,13 +45,13 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
 
     @Override
     public void onBindViewHolder(ImagesViewHolder holder, int position) {
-        //holder.mImageView.setimage(mImages.get(position);
+        Picasso.with(mContext).load(mImages.get(position)).placeholder(android.R.drawable.sym_def_app_icon).error(android.R.drawable.sym_def_app_icon).into(holder.mImageView);
+
     }
 
     @Override
     public int getItemCount() {
-        //return mImages.size();
-        return 0;
+        return mImages.size();
     }
 
 
