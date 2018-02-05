@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,18 +38,49 @@ public class MainActivity extends AppCompatActivity {
         mTypesFragment = new TypesFragment();
         mBreedFragment = new BreedFragment();
         mImagesFragment = new ImagesFragment();
+        mAllBreeds = new ArrayList<String>();
+        mBaseBreed = new HashMap<String, String>();
+        mSubBreed = new HashMap<String, String>();
         getSupportFragmentManager().beginTransaction().add(R.id.framelayout, mCoverFragment).commit();
-        retrofit = new Retrofit.Builder().baseUrl("http://dog.ceo").addConverterFactory(GsonConverterFactory.create()).build();
+        retrofit = new Retrofit.Builder().baseUrl("http://dog.ceo//").addConverterFactory(GsonConverterFactory.create()).build();
         DogApiService dogApiService = retrofit.create(DogApiService.class);
         Call<BreedResponse> call = dogApiService.getBreeds();
-        final String json;
         call.enqueue(new Callback<BreedResponse>() {
             @Override
             public void onResponse(Call<BreedResponse> call, Response<BreedResponse> response) {
-                Log.d(TAG, "GAYYYYYYYYYYYYY");
                 List<String> breeds = response.body().getBreeds();
                 Log.d(TAG, "Number of breeds received: " + breeds.size());
                 Log.d(TAG, "first breed: " + breeds.get(0));
+                SubBreedApiService subBreedApiService = retrofit.create(SubBreedApiService.class);
+                Call<SubBreedResponse> subCall;
+                for(final String baseBreed : breeds){
+                    subCall = subBreedApiService.getSubBreeds(baseBreed);
+                    subCall.enqueue(new Callback<SubBreedResponse>() {
+                        @Override
+                        public void onResponse(Call<SubBreedResponse> call, Response<SubBreedResponse> response) {
+                            Log.d(TAG, "onResponse: subbreeds of " + baseBreed);
+                            List<String> subBreeds = response.body().getSubBreeds();
+                            if(subBreeds.size() == 0){
+                                mAllBreeds.add(baseBreed);
+                                mBaseBreed.put(baseBreed, baseBreed);
+                                mSubBreed.put(baseBreed, "");
+                            }
+                            else{
+                                for(String subBreed : subBreeds){
+                                    String fullName = subBreed + " " + baseBreed;
+                                    mAllBreeds.add(fullName);
+                                    mBaseBreed.put(fullName, baseBreed);
+                                    mSubBreed.put(fullName, subBreed);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<SubBreedResponse> call, Throwable t) {
+                            Log.e(TAG, t.toString());
+                        }
+                    });
+                }
             }
 
             @Override

@@ -22,11 +22,7 @@ public class TypesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_types, container, false);
         RecyclerView recyclerView;
         List<String> breeds = new ArrayList<String>();
-        breeds.add("adfhadfh");
-        breeds.add("rtuwtrd");
-        breeds.add("erttruit");
-        breeds.add("dfjare");
-        breeds.add("fgjdfa");
+        breeds = ((MainActivity)getActivity()).getAllBreeds();
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_types);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new TypesAdapter(breeds, R.layout.item_type, getContext()));
