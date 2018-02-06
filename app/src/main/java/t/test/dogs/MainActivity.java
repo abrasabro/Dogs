@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BreedResponse> call, Response<BreedResponse> response) {
                 List<String> breeds = response.body().getBreeds();
-                Log.d(TAG, "Number of breeds received: " + breeds.size());
-                Log.d(TAG, "first breed: " + breeds.get(0));
                 SubBreedApiService subBreedApiService = retrofit.create(SubBreedApiService.class);
                 Call<SubBreedResponse> subCall;
                 for(final String baseBreed : breeds){
@@ -58,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                     subCall.enqueue(new Callback<SubBreedResponse>() {
                         @Override
                         public void onResponse(Call<SubBreedResponse> call, Response<SubBreedResponse> response) {
-                            Log.d(TAG, "onResponse: subbreeds of " + baseBreed);
                             List<String> subBreeds = response.body().getSubBreeds();
                             if(subBreeds.size() == 0){
                                 mAllBreeds.add(baseBreed);
@@ -117,10 +114,10 @@ public class MainActivity extends AppCompatActivity {
     public List<String> getAllBreeds(){
         return mAllBreeds;
     }
-    public Map<String, String> getBaseBreed(){
-        return mBaseBreed;
+    public String getBaseBreed(String fullName){
+        return mBaseBreed.get(fullName);
     }
-    public Map<String, String> getSubBreed(){
-        return mSubBreed;
+    public String getSubBreed(String fullName){
+        return mSubBreed.get(fullName);
     }
 }

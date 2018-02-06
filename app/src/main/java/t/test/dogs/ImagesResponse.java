@@ -8,12 +8,12 @@ import java.util.List;
  * Created by Owner on 2/5/2018.
  */
 
-public class SubBreedResponse {
+public class ImagesResponse {
     @SerializedName("status") private String status;
-    @SerializedName("message") private List<String> subBreeds;
+    @SerializedName("message") private List<String> imagePaths;
 
-    public List<String> getSubBreeds(){
-        return subBreeds;
+    public List<String> getImagePaths(){
+        return imagePaths;
     }
     public String getStatus(){
         return status;

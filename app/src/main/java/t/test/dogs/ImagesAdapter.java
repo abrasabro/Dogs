@@ -45,7 +45,11 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
 
     @Override
     public void onBindViewHolder(ImagesViewHolder holder, int position) {
-        Picasso.with(mContext).load(mImages.get(position)).placeholder(android.R.drawable.sym_def_app_icon).error(android.R.drawable.sym_def_app_icon).into(holder.mImageView);
+        Picasso.with(mContext)
+                .load(mImages.get(position))
+                .placeholder(android.R.drawable.sym_def_app_icon)
+                .error(android.R.drawable.sym_def_app_icon)
+                .into(holder.mImageView);
 
     }
 

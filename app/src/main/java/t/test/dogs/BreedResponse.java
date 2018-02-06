@@ -9,8 +9,8 @@ import java.util.List;
  */
 
 public class BreedResponse {
-    @SerializedName("status") String status;
-    @SerializedName("message") List<String> breeds;
+    @SerializedName("status") private String status;
+    @SerializedName("message") private List<String> breeds;
 
     public List<String> getBreeds(){
         return breeds;
