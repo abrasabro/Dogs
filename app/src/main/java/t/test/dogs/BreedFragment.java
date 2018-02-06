@@ -60,30 +60,44 @@ public class BreedFragment extends Fragment{
         String path;
         baseBreed = ((MainActivity)getActivity()).getBaseBreed(mBreed);
         subBreed = ((MainActivity)getActivity()).getSubBreed(mBreed);
+        Call<ImagesResponse> call;
         if(subBreed.equals("")){
-            path = baseBreed;
-        }else {
-            path = baseBreed + "/" + subBreed;
-        }
-        Log.d(TAG, "onCreateView: " + path);
-        Call<ImagesResponse> call = imagesApiService.getSubBreeds(path);
-        //Call<ImagesResponse> call = imagesApiService.getSubBreeds("");
-        call.enqueue(new Callback<ImagesResponse>() {
-            @Override
-            public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
-                List<String> imagePaths = response.body().getImagePaths();
-                Picasso.with(mContext)
-                        .load(imagePaths.get(0))
-                        .placeholder(android.R.drawable.sym_def_app_icon)
-                        .error(android.R.drawable.sym_def_app_icon)
-                        .into(mImageView);
-            }
+            call = imagesApiService.getSubBreeds(baseBreed);
+            call.enqueue(new Callback<ImagesResponse>() {
+                @Override
+                public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
+                    List<String> imagePaths = response.body().getImagePaths();
+                    Picasso.with(mContext)
+                            .load(imagePaths.get(0))
+                            .placeholder(android.R.drawable.sym_def_app_icon)
+                            .error(android.R.drawable.sym_def_app_icon)
+                            .into(mImageView);
+                }
 
-            @Override
-            public void onFailure(Call<ImagesResponse> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t);
-            }
-        });
+                @Override
+                public void onFailure(Call<ImagesResponse> call, Throwable t) {
+                    Log.d(TAG, "onFailure: " + t);
+                }
+            });
+        }else {
+            call = imagesApiService.getSubBreeds(baseBreed, subBreed);
+            call.enqueue(new Callback<ImagesResponse>() {
+                @Override
+                public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
+                    List<String> imagePaths = response.body().getImagePaths();
+                    Picasso.with(mContext)
+                            .load(imagePaths.get(0))
+                            .placeholder(android.R.drawable.sym_def_app_icon)
+                            .error(android.R.drawable.sym_def_app_icon)
+                            .into(mImageView);
+                }
+
+                @Override
+                public void onFailure(Call<ImagesResponse> call, Throwable t) {
+                    Log.d(TAG, "onFailure: " + t);
+                }
+            });
+        }
         return view;
     }
 

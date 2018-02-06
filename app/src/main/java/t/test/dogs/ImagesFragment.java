@@ -50,24 +50,37 @@ public class ImagesFragment extends Fragment {
         String path;
         baseBreed = ((MainActivity)getActivity()).getBaseBreed(mBreed);
         subBreed = ((MainActivity)getActivity()).getSubBreed(mBreed);
+        Call<ImagesResponse> call;
         if(subBreed.equals("")){
-            path = baseBreed;
-        }else {
-            path = baseBreed + "/" + subBreed;
-        }
-        Call<ImagesResponse> call = imagesApiService.getSubBreeds(path);
-        call.enqueue(new Callback<ImagesResponse>() {
-                         @Override
-                         public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
-                             mImagePaths = response.body().getImagePaths();
-                             recyclerView.setAdapter(new ImagesAdapter(mImagePaths, R.layout.item_image, getContext()));
-                         }
+            call = imagesApiService.getSubBreeds(baseBreed);
+            call.enqueue(new Callback<ImagesResponse>() {
+                @Override
+                public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
+                    mImagePaths = response.body().getImagePaths();
+                    recyclerView.setAdapter(new ImagesAdapter(mImagePaths, R.layout.item_image, getContext()));
+                }
 
-                         @Override
-                         public void onFailure(Call<ImagesResponse> call, Throwable t) {
-                             Log.d(TAG, "onFailure: " + t);
-                         }
-                     });
+                @Override
+                public void onFailure(Call<ImagesResponse> call, Throwable t) {
+                    Log.d(TAG, "onFailure: " + t);
+                }
+            });
+        }else {
+            call = imagesApiService.getSubBreeds(baseBreed, subBreed);
+            call.enqueue(new Callback<ImagesResponse>() {
+                @Override
+                public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
+                    mImagePaths = response.body().getImagePaths();
+                    recyclerView.setAdapter(new ImagesAdapter(mImagePaths, R.layout.item_image, getContext()));
+                }
+
+                @Override
+                public void onFailure(Call<ImagesResponse> call, Throwable t) {
+                    Log.d(TAG, "onFailure: " + t);
+                }
+            });
+        }
+
 
         return view;
     }

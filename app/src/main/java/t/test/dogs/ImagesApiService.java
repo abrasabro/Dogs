@@ -10,4 +10,5 @@ import retrofit2.http.Path;
 
 public interface ImagesApiService {
     @PUT("/api/breed/{imagePath}/images") Call<ImagesResponse> getSubBreeds(@Path("imagePath") String imagePath);
+    @PUT("/api/breed/{imagePath}/{imagePath2}/images") Call<ImagesResponse> getSubBreeds(@Path("imagePath") String imagePath, @Path("imagePath2") String imagePath2);
 }
